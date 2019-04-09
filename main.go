@@ -18,7 +18,7 @@ func main() {
 	api := NewKinkAPI()
 	c := NewCounter()
 
-	for i := 0; i < *daysTotal+1; i++ {
+	for i := 0; i <= *daysTotal; i++ {
 
 		d, err := fetchDay(0-i, api)
 		if err != nil {
