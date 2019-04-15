@@ -1,4 +1,4 @@
-package main
+package kink
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 
 const base string = "https://api.kink.nl"
 
-type api interface {
+type Api interface {
 	fetchProgramming(day int) ([]byte, error)
 }
 
-func NewKinkAPI() *kinkAPI {
+func NewKinkAPI() Api {
 	return &kinkAPI{}
 }
 

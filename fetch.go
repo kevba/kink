@@ -1,48 +1,48 @@
-package main
+package kink
 
 import "encoding/json"
 
-func fetchDay(dayOffset int, kink api) (day, error) {
+func FetchDay(dayOffset int, kink Api) (Day, error) {
 	data, err := kink.fetchProgramming(dayOffset)
 	if err != nil {
-		return day{}, err
+		return Day{}, err
 	}
 
 	day, err := parseDay(data)
 	return day, err
 }
 
-func parseDay(data []byte) (day, error) {
+func parseDay(data []byte) (Day, error) {
 	dataJSON := programmingJSON{}
 	err := json.Unmarshal(data, &dataJSON)
 	if err != nil {
-		return day{}, err
+		return Day{}, err
 	}
 
 	songs := parseSongs(dataJSON)
 
-	return day{songs}, nil
+	return Day{songs}, nil
 }
 
-func parseSongs(p programmingJSON) []song {
-	songs := []song{}
+func parseSongs(p programmingJSON) []Song {
+	songs := []Song{}
 
 	for _, s := range p.Included {
 		if s.Type != "played-song" {
 			continue
 		}
-		parsedSong := song{s.Attributes.Title, s.Attributes.Artist}
+		parsedSong := Song{s.Attributes.Title, s.Attributes.Artist}
 		songs = append(songs, parsedSong)
 	}
 
 	return songs
 }
 
-type day struct {
-	songs []song "json:`included`"
+type Day struct {
+	Songs []Song
 }
 
-type song struct {
-	title  string
-	artist string
+type Song struct {
+	Title  string
+	Artist string
 }
